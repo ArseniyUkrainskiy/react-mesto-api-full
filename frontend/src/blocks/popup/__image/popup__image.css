@@ -1,0 +1,14 @@
+.popup__image {
+  /* Максимальная ширина открытой картинки — 75vw */
+  max-width: 75vw;
+  /* максимальная высота — 75vh */
+  max-height: 75vh;
+  object-fit: fill;
+}
+@media screen and (max-width: 425px) {
+  .popup__image {
+    min-width: 240px;
+    min-height: 299px;
+    object-fit: cover;
+  }
+}

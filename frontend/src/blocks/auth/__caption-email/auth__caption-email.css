@@ -1,0 +1,12 @@
+.auth__caption-email {
+  color: #fff;
+  font-size: 18px;
+  line-height: 22px;
+  margin-right: 24px;
+}
+@media screen and (max-width: 540px) {
+  .auth__caption-email {
+    font-weight: 500;
+    display: none;
+  }
+}

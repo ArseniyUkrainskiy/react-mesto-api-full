@@ -1,0 +1,6 @@
+@media screen and (max-width: 540px) {
+  .auth__caption-button_active {
+    display: block;
+    margin: 0 auto;
+  }
+}

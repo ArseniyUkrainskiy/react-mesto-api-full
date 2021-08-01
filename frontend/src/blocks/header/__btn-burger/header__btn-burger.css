@@ -1,0 +1,41 @@
+.header__btn-burger {
+  display: none;
+}
+@media screen and (max-width: 540px) {
+  .header__btn-burger {
+    padding: 0;
+    margin: 0;
+    margin-right: 30px;
+    display: block;
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    position: relative;
+  }
+}
+.header__btn-burger span,
+.header__btn-burger span::before,
+.header__btn-burger span::after {
+  position: absolute;
+  top: 50%;
+  margin-top: -1px;
+  left: 10px;
+  margin-left: -10px;
+  width: 30px;
+  height: 2px;
+  background-color: white;
+}
+.header__btn-burger span::before,
+.header__btn-burger span::after {
+  content: '';
+  display: block;
+  transition: 0.8s;
+}
+.header__btn-burger span::before {
+  transform: translateY(-12px);
+}
+.header__btn-burger span::after {
+  transform: translateY(12px);
+}

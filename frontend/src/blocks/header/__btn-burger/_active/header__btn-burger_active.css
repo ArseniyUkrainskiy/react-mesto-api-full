@@ -1,0 +1,9 @@
+.header__btn-burger_active span::before {
+  transform: rotate(-40deg);
+}
+.header__btn-burger_active span {
+  height: 0;
+}
+.header__btn-burger_active span::after {
+  transform: rotate(40deg);
+}

@@ -1,0 +1,29 @@
+.popup__error {
+  /* display: none; */
+  color: #ff0000;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  margin: 0;
+  padding: 5px 0 0 0;
+  width: 100%;
+  max-width: 358px;
+}
+
+@media screen and (max-width: 768px) {
+  .popup__error {
+    width: calc(100% - (430px - 370px));
+  }
+}
+@media screen and (max-width: 425px) {
+  .popup__error {
+    max-width: 238px;
+    width: 100%;
+  }
+}
+@media screen and (max-width: 264px) {
+  .popup__error {
+    /* max-width: 238px; */
+    width: 92%;
+  }
+}

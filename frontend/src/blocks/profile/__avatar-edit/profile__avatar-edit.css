@@ -1,0 +1,33 @@
+.profile__avatar-edit {
+  background-color: transparent;
+  background-image: url(https://rb.ru/media/upload_tmp/2018/d5.gif);
+  width: 120px;
+  height: 120px;
+  border-radius: 100px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  opacity: 1;
+  outline: none;
+}
+.profile__avatar-edit::before {
+  content: '';
+  opacity: 0;
+  background-image: url(./images/Edit-Button.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  margin: auto;
+  outline: none;
+}
+.profile__avatar-edit:hover::before {
+  cursor: pointer;
+  opacity: 1;
+  transition: 0.8s;
+}
