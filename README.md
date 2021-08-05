@@ -1,4 +1,4 @@
-## react-mesto-api-full https://rb.ru/media/upload_tmp/2018/d5.gif
+## react-mesto-api-full [https://rb.ru/media/upload_tmp/2018/d5.gif]
 
 Репозиторий для приложения проекта `Mesto`, включающий фронтенд и бэкенд части приложения со следующими возможностями: авторизации и регистрации пользователей, операции с карточками и пользователями. :panda_face:
 Бэкенд в директории `backend/`, а фронтенд - в `frontend/`.
