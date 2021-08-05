@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+require('dotenv').config();
 const path = require('path');
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/mestodb', {
