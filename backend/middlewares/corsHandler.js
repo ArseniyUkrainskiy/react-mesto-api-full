@@ -8,8 +8,8 @@ const corsHandler = (req, res, next) => {
   const allowedCors = [
     'http://localhost:3000',
     'https://localhost:3000',
-    'http://mesto.app.nomoredomains.club/',
-    'https://mesto.app.nomoredomains.club/',
+    'http://mesto.app.nomoredomains.club',
+    'https://mesto.app.nomoredomains.club',
   ];
   // проверяем, что источник запроса есть среди разрешённых
   if (allowedCors.includes(origin)) {
