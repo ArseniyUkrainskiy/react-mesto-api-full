@@ -15,8 +15,9 @@ function InfoTooltip(props) {
         <p className="popup__infoTool-message">
           {props.isRegStatus
             ? `Вы успешно${' '}зарегистрировались!`
-            : `Что-то пошло не так!${' '}
-Попробуйте ещё раз.`}
+            : `Что-то пошло не так!
+            ${props.infoErr}
+            Попробуйте ещё раз.`}
         </p>
       </>
     </PopupWithForm>

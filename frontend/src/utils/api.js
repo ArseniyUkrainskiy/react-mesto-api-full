@@ -12,24 +12,33 @@ export class Api {
   }
 
   //Загрузка информации о пользователе с сервера
-  getUser() {
+  getUser(JWT) {
     return fetch(`${this._url}/users/me`, {
       method: 'GET',
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+        'Content-Type': 'application/json',
+      },
     }).then(this._checkResponse)
   }
   //Загрузка карточек с сервера
-  getInitialCards() {
+  getInitialCards(JWT) {
     return fetch(`${this._url}/cards`, {
       method: 'GET',
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+        'Content-Type': 'application/json',
+      },
     }).then(this._checkResponse)
   }
   //Редактирование профиля
-  editUserInfo(data) {
+  editUserInfo(data,JWT) {
     return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         name: data.name,
         about: data.about,
@@ -37,44 +46,59 @@ export class Api {
     }).then(this._checkResponse)
   }
   //Добавление новой карточки
-  createNewCard(data) {
+  createNewCard(data,JWT) {
     return fetch(`${this._url}/cards`, {
       method: 'POST',
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
-        name: data.name,
-        link: data.link,
+        name: data.name, 
+        link: data.link
       }),
     }).then(this._checkResponse)
   }
   //Удаление карточки
-  removeCard(cardId) {
+  removeCard(cardId,JWT) {
     return fetch(`${this._url}/cards/${cardId}`, {
       method: 'DELETE',
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+        'Content-Type': 'application/json',
+      },
     }).then(this._checkResponse)
   }
 
   //Постановка и снятие лайка
   //Поставить лайк
-  likeCard(cardId) {
-    return fetch(`${this._url}/cards/likes/${cardId}`, {
+  likeCard(cardId,JWT) {
+    return fetch(`${this._url}/cards/${cardId}/likes`, {
       method: 'PUT',
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+        'Content-Type': 'application/json',
+      },
     }).then(this._checkResponse)
   }
   //Снять лайк
-  deleteLike(cardId) {
-    return fetch(`${this._url}/cards/likes/${cardId}`, {
+  deleteLike(cardId,JWT) {
+    return fetch(`${this._url}/cards/${cardId}/likes`, {
       method: 'DELETE',
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+        'Content-Type': 'application/json',
+      },
     }).then(this._checkResponse)
   }
   //Обновление аватара пользователя
-  updateAvatar(newAvatar) {
+  updateAvatar(newAvatar,JWT) {
     return fetch(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         //avatar: newAvatar['avatar-link'],
         avatar: newAvatar,
@@ -86,7 +110,7 @@ const BASE_URL = `${window.location.protocol}${process.env.REACT_APP_API_URL || 
 const api = new Api({
   url: BASE_URL,
   headers: {
-    /* Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZmQxZmU3NzE4NGNiMTlmODRmZjMzMiIsImlhdCI6MTYyNzcxMTEyMCwiZXhwIjoxNjI4MzE1OTIwfQ.HU1ozOeuTnY2xaLWz6QXYf1eh_wZ_UhZzIkGVUiAuKE', */
+    Authorization: `Bearer ${localStorage.getItem('jwt')}`,
     'Content-Type': 'application/json',
   },
 })

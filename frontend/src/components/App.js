@@ -23,20 +23,6 @@ import ProtectedRoute from './ProtectedRoute'
 function App() {
   const [currentUser, setCurrentUser] = React.useState({ name: 'Имя...', about: 'О себе..' })
   const [cards, setCards] = React.useState([]) //Выполнено поднятие стейта
-  React.useEffect(() => {
-    //тут я получаю данные сразу по пользователю и карточке, так как нет смысла разделять их. Стейт-переменыне вынесены.
-    Promise.all([api.getUser(), api.getInitialCards()])
-      .then((data) => {
-        const [userData, cardsData] = data
-        setCurrentUser(userData)
-        setCards(cardsData)
-        //checkToken()
-      })
-      .catch((err) => {
-        console.log(`Ошибка при получении данных: ${err}`)
-      })
-  }, [])
-
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false)
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false)
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false)
@@ -53,30 +39,49 @@ function App() {
   const history = useHistory()
 
   const handleCardClick = ({ name, link }) => setSelectedCard({ name, link })
+  const [infoErr, setInfoErr] = React.useState('')
+  React.useEffect(() => {
+    const JWT = localStorage.getItem('jwt')
+    //тут я получаю данные сразу по пользователю и карточке, так как нет смысла разделять их. Стейт-переменыне вынесены.
+    loggedIn && Promise.all([api.getUser(JWT), api.getInitialCards(JWT)])
+      .then((data) => {
+        const [userData, cardsData] = data
+        setCurrentUser(userData)
+        setCards(cardsData.cards)
+        //checkToken()
+      })
+      .catch((err) => {
+        console.log(`Ошибка при получении данных: ${err}`)
+      })
+  }, [loggedIn, userEmail])
+
+
 
   function handleCardLike({ likes, cardId }) {
-    const isLiked = likes.some((like) => like._id === currentUser._id)
+    const JWT = localStorage.getItem('jwt')
+    const isLiked = likes.some((like) => like === currentUser._id)
     isLiked
       ? api
-          .deleteLike(cardId)
+          .deleteLike(cardId,JWT)
           .then((newCard) => {
-            setCards((state) => state.map((card) => (card._id === cardId ? newCard : card)))
+            setCards((state) => state.map((card) => (card._id === cardId ? newCard.card : card)))
           })
           .catch((err) => {
             console.log(`Ошибка при получении данных карточки во время лайка: ${err}`)
           })
       : api
-          .likeCard(cardId)
+          .likeCard(cardId,JWT)
           .then((newCard) => {
-            setCards((state) => state.map((card) => (card._id === cardId ? newCard : card)))
+            setCards((state) => state.map((card) => (card._id === cardId ? newCard.card : card)))
           })
           .catch((err) => {
             console.log(`Ошибка при получении данных карточки во время лайка: ${err}`)
           })
   }
   function handleCardDelete() {
+    const JWT = localStorage.getItem('jwt')
     api
-      .removeCard(remCardId)
+      .removeCard(remCardId,JWT)
       .then(() => {
         //исключить удаленную карточку из массива
         setCards(cards.filter((card) => card._id !== remCardId))
@@ -87,8 +92,9 @@ function App() {
       })
   }
   function handleUpdateUser({ name, about }) {
+    const JWT = localStorage.getItem('jwt')
     api
-      .editUserInfo({ name, about })
+      .editUserInfo({ name, about },JWT)
       .then((userData) => {
         setCurrentUser(userData) //После завершения запроса обновите стейт currentUser из полученных данных
         closeAllPopups() //закройте все модальные окна
@@ -98,8 +104,9 @@ function App() {
       })
   }
   function handleUpdateAvatar({ avatar }) {
+    const JWT = localStorage.getItem('jwt')
     api
-      .updateAvatar(avatar)
+      .updateAvatar(avatar,JWT)
       .then((userData) => {
         setCurrentUser(userData)
         closeAllPopups()
@@ -109,10 +116,11 @@ function App() {
       })
   }
   function handleAddPlaceSubmit({ name, link }) {
+    const JWT = localStorage.getItem('jwt')
     api
-      .createNewCard({ name, link })
-      .then((newCard) => {
-        setCards([newCard, ...cards])
+      .createNewCard({ name, link },JWT)
+      .then((cardsData) => {
+        setCards([cardsData.card, ...cards])
         closeAllPopups()
       })
       .catch((err) => {
@@ -152,17 +160,17 @@ function App() {
     auth
       .register({ password, email })
       .then((data) => {
-        const JWT = data.data._id //вытащить токен
+        const JWT = data._id //вытащить токен
         JWT && localStorage.setItem('jwt', JWT) //если есть токен записать его
-        setUserEmail({ email: data.data.email })
+        setUserEmail({ email: data.email })
         setInfoPopupOpen(true)
         setRegStatus(true)
-        setLoggedIn(true)
         history.push('/sign-in')
       })
       .catch((err) => {
         setInfoPopupOpen(true)
         setRegStatus(false)
+        setInfoErr(err)
         console.log(`Ошибка при регистрации нового пользователя.register: ${err}`)
       })
   }
@@ -179,6 +187,7 @@ function App() {
       .catch((err) => {
         setInfoPopupOpen(true)
         setRegStatus(false)
+        setInfoErr(err)
         console.log(`Ошибка при авторизации пользователя.login: ${err}`)
       })
   }
@@ -189,13 +198,13 @@ function App() {
     history.push('/sign-in')
   }
 
-  const checkToken = React.useCallback(() => {
+  const checkToken = React.useCallback(() => { 
     const JWT = localStorage.getItem('jwt')
     JWT &&
       auth
         .checkToken(JWT)
         .then((data) => {
-          setUserEmail({ email: data.data.email })
+          setUserEmail({ email: data.email })
           setLoggedIn(true)
           history.push('/')
         })
@@ -206,7 +215,7 @@ function App() {
 
   React.useEffect(() => {
     checkToken()
-  }, [checkToken])
+  }, [checkToken, loggedIn])
   return (
     <>
       <CurrentUserContext.Provider value={currentUser}>
@@ -245,6 +254,7 @@ function App() {
             isOpen={isInfoPopupOpen}
             onClose={closeAllPopups}
             isRegStatus={isRegStatus}
+            infoErr={infoErr}
           />
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}

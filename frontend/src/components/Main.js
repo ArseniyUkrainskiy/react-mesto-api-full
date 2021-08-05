@@ -44,7 +44,7 @@ function Main({
                 name={card.name}
                 link={card.link}
                 likes={card.likes}
-                ownerId={card.owner._id}
+                ownerId={card.owner}
                 onCardClick={onCardClick}
                 onCardLike={onCardLike}
                 //onCardDelete={onCardDelete}

@@ -6,6 +6,7 @@
   width: 100%;
   max-width: 358px;
   text-align: center;
+  white-space: pre-line;
 }
 @media screen and (max-width: 320px) {
   .popup__infoTool-message {
