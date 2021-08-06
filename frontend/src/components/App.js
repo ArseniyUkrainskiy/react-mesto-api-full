@@ -47,7 +47,7 @@ function App() {
       .then((data) => {
         const [userData, cardsData] = data
         setCurrentUser(userData)
-        setCards(cardsData.cards)
+        setCards(cardsData.cards.reverse())
         //checkToken()
       })
       .catch((err) => {
@@ -120,7 +120,7 @@ function App() {
     api
       .createNewCard({ name, link },JWT)
       .then((cardsData) => {
-        setCards([cardsData.card, ...cards])
+        setCards([cardsData.card, ...cards].reverse())
         closeAllPopups()
       })
       .catch((err) => {
