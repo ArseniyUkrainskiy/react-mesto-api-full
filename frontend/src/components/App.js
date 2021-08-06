@@ -120,7 +120,7 @@ function App() {
     api
       .createNewCard({ name, link },JWT)
       .then((cardsData) => {
-        setCards([cardsData.card, ...cards].reverse())
+        setCards([cardsData.card, ...cards])
         closeAllPopups()
       })
       .catch((err) => {
