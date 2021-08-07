@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 require('dotenv').config();
-const path = require('path');
+/* const path = require('path'); */
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
@@ -25,7 +25,7 @@ const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const { PORT = 3001 } = process.env;
 
-app.use(express.static(path.join(__dirname, 'public')));
+/* app.use(express.static(path.join(__dirname, 'public'))); */
 
 app.use(requestLogger); // подключаем логгер запросов
 app.use(helmet());
