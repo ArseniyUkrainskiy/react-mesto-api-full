@@ -15,7 +15,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-@media screen and (max-width: 1024px) {
+/* @media screen and (max-width: 1024px) {
   .root {
     width: 90vw;
   }
@@ -30,7 +30,7 @@
   .root {
     width: 100%;
   }
-}
+} */
 
 /* * {
   outline: 1px bisque solid;
